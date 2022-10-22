@@ -11,18 +11,21 @@ class card {
     constructor(value, suit) {
         this.element = document.createElement('div')
         this.element.classList.add('card')
-        this.element.innerHTML = value
-        const suit_element = document.createElement('span')
-        suit_element.innerHTML = suit[0]
-        suit_element.classList.add(suit[1])
-        this.element.appendChild(suit_element)
-        this.slot = undefined;
+        this.element.innerHTML = '<span>' + value + '</span><span class="' + suit[1] + '">' + suit[0] + '</span>'
+        this.slot = undefined
     }
 
     set_slot(slot) {
         this.slot?.removeChild(this.element)
         this.slot = slot
         this.slot.appendChild(this.element)
+    }
+
+    set_visibility(visible) {
+        if (visible)
+            this.element.classList.add('visible')
+        else
+            this.element.classList.remove('visable')
     }
 }
 
@@ -36,8 +39,6 @@ function shuffle(array) {
     return array
 }
 
-// const slot1 = document.querySelector('.card-slot')
-
 let deck = []
 for (let suit in suits) {
     for (let v of values) {
@@ -46,8 +47,23 @@ for (let suit in suits) {
     }
 }
 shuffle(deck)
-for (let c of deck) {
-    // c.set_slot(slot1)
+
+const tableau_slots = document.querySelectorAll('.tableau > .card-slot')
+const stock_slot = document.querySelector('.stock > .card-slot')
+
+function deal(deck, slots, stock) {
+    let current = 0
+
+    for (let i = 0; i < slots.length; i++) {
+        deck[current].set_visibility(true)
+        for (let j = i; j < slots.length; j++) {
+            deck[current++].set_slot(slots[j])
+        }
+    }
+
+    for (; current < deck.length; current++) {
+        deck[current].set_slot(stock)
+    }
 }
 
-const tableau = document.querySelector('.tableau')
+deal(deck, tableau_slots, stock_slot)
