@@ -1,4 +1,4 @@
-import { card_t, create_deck, shuffle } from './card.js'
+import { card_t, create_deck, shuffle, values } from './card.js'
 import { slot_t, slot_type, setup_slots } from './slot.js'
 
 function deal(deck, tableau_slots, stock) {
@@ -56,16 +56,40 @@ function select_card(card) {
 
     if (!card.visible)
         return
-    selected_card = card
+    
+    if (selected_card === card)
+        selected_card = undefined
+    else
+        selected_card = card
 }
 
 function can_place_in_slot(card, slot) {
-    return true
+    if (slot.type === slot_type.foundation) {
+        if (slot.top()) {
+            console.log('top is not empty', slot.top().debug_name(), card.debug_name())
+            return slot.top().suit === card.suit
+                && values.findIndex(v => v === slot.top().value) + 1 === values.findIndex(v => v === card.value)
+        } else {
+            console.log('top is empty', card.debug_name())
+            return card.value === 'A'
+        }
+    
+    } else if (slot.type === slot_type.tableau) {
+        console.log('tableau logic')
+        if (slot.top()) {
+            return slot.top().is_red() !== card.is_red()
+                && values.findIndex(v => v === slot.top().value) === values.findIndex(v => v === card.value) + 1
+        } else
+            return card.value === 'K'
+    }
+    return false
 }
 
 function set_card_in_slot(slot) {
-    if (!can_place_in_slot(selected_card, slot))
+    if (!can_place_in_slot(selected_card, slot)) {
+        selected_card = undefined
         return
+    }
         
     let old_slot = selected_card.slot
     for (let card of selected_card.slot.get_card_stack(selected_card)) {
