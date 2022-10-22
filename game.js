@@ -1,32 +1,29 @@
-import { card_t, create_deck, shuffle } from "./card.js"
+import { card_t, create_deck, shuffle } from './card.js'
+import { slot_t, slot_type, get_slots } from './slot.js'
 
-const tableau_slots = document.querySelectorAll('.tableau > .card-slot')
-const stock_slot = document.querySelector('.stock > .card-slot')
-
-function deal(deck, slots, stock) {
+function deal(deck, tableau_slots, stock) {
     let current = 0
     
-    for (let i = 0; i < slots.length; i++) {
+    for (let i = 0; i < tableau_slots.length; i++) {
         deck[current].visibile = true
-        for (let j = i; j < slots.length; j++) {
-            deck[current++].set_slot(slots[j])
+        for (let j = i; j < tableau_slots.length; j++) {
+            deck[current++].set_slot(tableau_slots[j])
         }
     }
-
+    
     for (; current < deck.length; current++) {
         deck[current].set_slot(stock)
     }
 }
 
+const tableau_slots = get_slots(document.querySelectorAll('.tableau > .card-slot'), slot_type.tableau, handle_select)
+const foundation_slots = get_slots(document.querySelectorAll('.foundation > .card-slot'), slot_type.foundation, handle_select)
+
+const stock_slot = new slot_t(document.querySelector('.stock > .card-slot'), slot_type.stock, handle_select)
+const discard_slot = new slot_t(document.querySelector('.discard > .card-slot'), slot_type.discard, handle_select)
+
 let selected_card = undefined
 let deck = create_deck(handle_select)
-
-for (let slot of document.querySelectorAll('.card-slot')) {
-    slot.addEventListener('click', e => {
-        if (e.target === slot)
-            handle_select(slot)
-    })
-}
 
 function start() {
     shuffle(deck)

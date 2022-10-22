@@ -19,9 +19,9 @@ export class card_t {
     }
 
     set_slot(slot) {
-        this.slot?.removeChild(this.element)
+        this.slot?.remove(this)
         this.slot = slot
-        this.slot.appendChild(this.element)
+        this.slot.add(this)
     }
 
     set visibile(visible) {
