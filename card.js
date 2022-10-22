@@ -7,12 +7,14 @@ const suits = {
     diamonds: ['♦️', 'red']
 }
 
-export class card {
+export class card_t {
     constructor(value, suit, on_select) {
         this.element = document.createElement('div')
         this.element.classList.add('card')
         this.element.innerHTML = '<span>' + value + '</span><span class="' + suit[1] + '">' + suit[0] + '</span>'
         this.element.addEventListener('click', () => on_select(this))
+        this.value = value
+        this.suit = suit
         this.slot = undefined
     }
 
@@ -22,11 +24,23 @@ export class card {
         this.slot.appendChild(this.element)
     }
 
-    set_visibility(visible) {
+    set visibile(visible) {
         if (visible)
             this.element.classList.add('visible')
         else
             this.element.classList.remove('visable')
+    }
+
+    get visible() {
+        return this.element.classList.contains('visible')
+    }
+
+    is_red() {
+        return this.suit[1] === 'red'
+    }
+
+    debug_name() {
+        return `${this.value}${this.suit[0]}`
     }
 }
 
@@ -34,7 +48,7 @@ export function create_deck(handle_select) {
     let deck = []
     for (let suit in suits) {
         for (let v of values) {
-            let c = new card(v, suits[suit], handle_select)
+            let c = new card_t(v, suits[suit], handle_select)
             deck.push(c)
         }
     }
