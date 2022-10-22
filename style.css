@@ -53,6 +53,7 @@ body {
 }
 
 .card {
+    display: none;
     width: calc(100% - 2 * var(--card-padding));
     height: calc(1em - .5 * var(--card-padding));
     position: relative;
@@ -62,11 +63,16 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0, 30%);
 }
 
+.tableau .card {
+    display: block;
+}
+
 .card:first-of-type {
     top: 0;
 }
 
 .card:last-of-type {
+    display: block;
     height: calc(100% - 2 * var(--card-padding));
     display: flex;
     align-items: center;
