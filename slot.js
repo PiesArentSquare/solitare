@@ -27,7 +27,7 @@ export class slot_t {
     }
 }
 
-export function get_slots(elements, type, on_click) {
+export function setup_slots(elements, type, on_click) {
     let slots = []
     elements.forEach((element, i) => {
         slots[i] = new slot_t(element, type, on_click)

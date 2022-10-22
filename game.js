@@ -1,5 +1,5 @@
 import { card_t, create_deck, shuffle } from './card.js'
-import { slot_t, slot_type, get_slots } from './slot.js'
+import { slot_t, slot_type, setup_slots } from './slot.js'
 
 function deal(deck, tableau_slots, stock) {
     let current = 0
@@ -16,8 +16,8 @@ function deal(deck, tableau_slots, stock) {
     }
 }
 
-const tableau_slots = get_slots(document.querySelectorAll('.tableau > .card-slot'), slot_type.tableau, handle_select)
-const foundation_slots = get_slots(document.querySelectorAll('.foundation > .card-slot'), slot_type.foundation, handle_select)
+const tableau_slots = setup_slots(document.querySelectorAll('.tableau > .card-slot'), slot_type.tableau, handle_select)
+const foundation_slots = setup_slots(document.querySelectorAll('.foundation > .card-slot'), slot_type.foundation, handle_select)
 
 const stock_slot = new slot_t(document.querySelector('.stock > .card-slot'), slot_type.stock, refill_stock)
 const discard_slot = new slot_t(document.querySelector('.discard > .card-slot'), slot_type.discard, handle_select)
