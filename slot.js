@@ -17,7 +17,6 @@ export class slot_t {
 
     add(card) {
         this.element.appendChild(card.element)
-        // console.log(card.debug_name())
     }
 
     remove(card) {
@@ -25,11 +24,10 @@ export class slot_t {
     }
 }
 
-export function get_slots(elements, type) {
+export function get_slots(elements, type, on_click) {
     let slots = []
-    // console.log(elements.length)
     elements.forEach((element, i) => {
-        slots[i] = new slot_t(element, type)
+        slots[i] = new slot_t(element, type, on_click)
     })
     return slots
 }
