@@ -24,7 +24,7 @@ export class card_t {
         this.slot.add(this)
     }
 
-    set visibile(visible) {
+    set visible(visible) {
         if (visible)
             this.element.classList.add('visible')
         else
