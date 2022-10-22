@@ -43,6 +43,12 @@ export class card_t {
         return `${this.value}${this.suit[0]}`
     }
 
+    set selected(selected) {
+        if (selected)
+            this.element.classList.add('selected')
+        else
+            this.element.classList.remove('selected')
+    }
 }
 
 export function create_deck(handle_select) {

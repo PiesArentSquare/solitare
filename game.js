@@ -33,7 +33,7 @@ function start() {
 function handle_select(card_or_slot) {
     if (card_or_slot instanceof card_t)
         if (selected_card)
-            set_card_in_slot(card_or_slot.slot)
+            set_card_in_slot(card_or_slot.slot, card_or_slot)
         else
             select_card(card_or_slot)
     else if (selected_card)
@@ -47,10 +47,32 @@ function refill_stock(_card) {
     }
 }
 
+function set_selected(card) {
+    if (selected_card) {
+        for (let card of selected_card.slot.get_card_stack(selected_card)) {
+            card.selected = false
+        }
+    }
+    
+    selected_card = card
+
+    if (card) {
+        for (let card of selected_card.slot.get_card_stack(selected_card)) {
+            card.selected = true
+        }
+    }
+}
+
 function select_card(card) {
+    if (!card) {
+        set_selected(undefined)
+        return
+    }
+
     if (card.slot.type === slot_type.stock) {
         card.set_slot(discard_slot)
         card.visible = true
+        set_selected(undefined)
         return
     }
 
@@ -58,24 +80,21 @@ function select_card(card) {
         return
     
     if (selected_card === card)
-        selected_card = undefined
+        set_selected(undefined)
     else
-        selected_card = card
+        set_selected(card)
 }
 
 function can_place_in_slot(card, slot) {
-    if (slot.type === slot_type.foundation) {
+    if (slot.type === slot_type.foundation && card.slot.top() === card) {
         if (slot.top()) {
-            console.log('top is not empty', slot.top().debug_name(), card.debug_name())
             return slot.top().suit === card.suit
                 && values.findIndex(v => v === slot.top().value) + 1 === values.findIndex(v => v === card.value)
         } else {
-            console.log('top is empty', card.debug_name())
             return card.value === 'A'
         }
     
     } else if (slot.type === slot_type.tableau) {
-        console.log('tableau logic')
         if (slot.top()) {
             return slot.top().is_red() !== card.is_red()
                 && values.findIndex(v => v === slot.top().value) === values.findIndex(v => v === card.value) + 1
@@ -85,9 +104,9 @@ function can_place_in_slot(card, slot) {
     return false
 }
 
-function set_card_in_slot(slot) {
+function set_card_in_slot(slot, card) {
     if (!can_place_in_slot(selected_card, slot)) {
-        selected_card = undefined
+        select_card(card)
         return
     }
         
@@ -99,7 +118,7 @@ function set_card_in_slot(slot) {
     if (old_slot.type === slot_type.tableau && old_slot.top())
         old_slot.top().visible = true
     
-    selected_card = undefined
+    set_selected(undefined)
 }
 
 start()
