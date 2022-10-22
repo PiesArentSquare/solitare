@@ -13,14 +13,17 @@ export class slot_t {
                 on_click(this)
         })
         this.type = type
+        this.cards = []
     }
 
     add(card) {
         this.element.appendChild(card.element)
+        this.cards.push(card)
     }
 
     remove(card) {
         this.element.removeChild(card.element)
+        this.cards.filter(v => v !== card)
     }
 }
 

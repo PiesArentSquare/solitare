@@ -28,7 +28,7 @@ export class card_t {
         if (visible)
             this.element.classList.add('visible')
         else
-            this.element.classList.remove('visable')
+            this.element.classList.remove('visible')
     }
 
     get visible() {
