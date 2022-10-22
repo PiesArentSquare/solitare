@@ -54,6 +54,7 @@ body {
 
 .card {
     display: none;
+    user-select: none;
     width: calc(100% - 2 * var(--card-padding));
     height: calc(1em - .5 * var(--card-padding));
     position: relative;
