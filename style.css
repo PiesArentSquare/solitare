@@ -60,6 +60,7 @@ body {
 
 .card {
     display: none;
+    -webkit-user-select: none;
     user-select: none;
     width: calc(100% - 2 * var(--card-padding));
     height: calc(1em - .5 * var(--card-padding));
