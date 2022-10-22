@@ -23,7 +23,23 @@ export class slot_t {
 
     remove(card) {
         this.element.removeChild(card.element)
-        this.cards.filter(v => v !== card)
+        for (let i = 0; i < this.cards.length; i++)
+            if (this.cards[i] === card)
+                this.cards.splice(i, 1)
+    }
+
+    get_card_stack(base_card) {
+        let card_stack = []
+        for (let card of this.cards) {
+            if (base_card === card || card_stack.length > 0) // get the pased card and every subsequent
+                card_stack.push(card)
+        }
+        return card_stack
+    }
+
+    top() {
+        if (this.cards.length > 0)
+            return this.cards[this.cards.length - 1]
     }
 }
 

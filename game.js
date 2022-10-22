@@ -40,15 +40,15 @@ function handle_select(card_or_slot) {
         set_card_in_slot(card_or_slot)
 }
 
-function refill_stock(card) {
+function refill_stock(_card) {
     for (let i = discard_slot.cards.length - 1; i >= 0; i--) {
-        discard_slot.cards[i].set_slot(stock_slot)
         discard_slot.cards[i].visible = false
+        discard_slot.cards[i].set_slot(stock_slot)
     }
 }
 
 function select_card(card) {
-    if (card.slot === stock_slot) {
+    if (card.slot.type === slot_type.stock) {
         card.set_slot(discard_slot)
         card.visible = true
         return
@@ -59,7 +59,21 @@ function select_card(card) {
     selected_card = card
 }
 
+function can_place_in_slot(card, slot) {
+    return true
+}
+
 function set_card_in_slot(slot) {
+    if (!can_place_in_slot(selected_card, slot))
+        return
+        
+    let old_slot = selected_card.slot
+    for (let card of selected_card.slot.get_card_stack(selected_card)) {
+        card.set_slot(slot)
+    }
+
+    if (old_slot.type === slot_type.tableau && old_slot.top())
+        old_slot.top().visible = true
     
     selected_card = undefined
 }
