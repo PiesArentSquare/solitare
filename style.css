@@ -42,6 +42,7 @@ body {
 
 .stock {
     grid-column: 4;
+    cursor: pointer;
 }
 
 .tableau {
@@ -69,6 +70,7 @@ body {
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: 0 0 10px rgba(0,0,0, 30%);
+    cursor: pointer;
 }
 
 .tableau .card {
