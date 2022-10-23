@@ -27,7 +27,7 @@ body {
 }
 
 .table {
-    max-width: 1300px; 
+    max-width: 800px; 
     margin: 2rem auto;
     display: grid;
     grid-template-columns: 1fr 1fr min-content min-content;
@@ -161,8 +161,12 @@ body {
     color: white
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1300px) {
     :root {
         --card-scale: 1.5;
+    }
+
+    .table {
+        max-width: 1300px;
     }
 }
